@@ -1,0 +1,4 @@
+/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/CMakeFiles/SignGeneratorGUI.dir
+/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/CMakeFiles/SignGeneratorGUI_autogen.dir

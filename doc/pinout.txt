@@ -1,0 +1,35 @@
+Connections:
+---------------------
+
+SD-Card:
+
+3V3: klar
+CS: 10
+MOSI: 11
+CLK: 13
+MISO: 12
+GND: klar
+
+
+Display 01:
+
+GND: klar
+VCC: klar
+SCL: 13
+SDA: 11
+RES: 7
+DC: 9
+CS: 8
+BLK: Not connected
+
+
+Display 02:
+
+GND: klar
+VCC: klar
+SCL: 13
+SDA: 11
+RES: 4
+DC: 3
+CS: 2
+BLK: Not connected

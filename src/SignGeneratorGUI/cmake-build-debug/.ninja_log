@@ -1,0 +1,17 @@
+# ninja log v5
+2	5	0	/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/CMakeFiles/SignGeneratorGUI_autogen	b2627c9d1ace75e1
+7	5517	1654265981523567120	CMakeFiles/SignGeneratorGUI.dir/PlatformInfo.cpp.o	988063a5bfb66776
+2	5	0	SignGeneratorGUI_autogen/mocs_compilation.cpp	b2627c9d1ace75e1
+1	100	1654266187610876235	build.ninja	b092ee9765b89a7d
+2	5	0	CMakeFiles/SignGeneratorGUI_autogen	b2627c9d1ace75e1
+5517	6595	1654265982599564377	SignGeneratorGUI	be7ee6d6fd1ad3f1
+215	3258	1654265227577064938	CMakeFiles/SignGeneratorGUI.dir/main.cpp.o	ca6d0407739d4ea
+215	3221	1654265227541064477	CMakeFiles/SignGeneratorGUI.dir/SignGeneratorGUI_autogen/mocs_compilation.cpp.o	a97f958ef9280591
+2	5	0	/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/SignGeneratorGUI_autogen/mocs_compilation.cpp	b2627c9d1ace75e1
+1	88	1654266187610876235	build.ninja	b092ee9765b89a7d
+2	4	0	CMakeFiles/SignGeneratorGUI_autogen	b2627c9d1ace75e1
+2	4	0	SignGeneratorGUI_autogen/mocs_compilation.cpp	b2627c9d1ace75e1
+2	4	0	/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/CMakeFiles/SignGeneratorGUI_autogen	b2627c9d1ace75e1
+2	4	0	/home/fabian/GitHubProjects/TrainDisplay/src/SignGeneratorGUI/cmake-build-debug/SignGeneratorGUI_autogen/mocs_compilation.cpp	b2627c9d1ace75e1
+5	3220	1654266190834863119	CMakeFiles/SignGeneratorGUI.dir/PlatformInfo.cpp.o	988063a5bfb66776
+3220	4183	1654266191794859201	SignGeneratorGUI	be7ee6d6fd1ad3f1
