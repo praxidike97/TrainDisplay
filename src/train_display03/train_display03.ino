@@ -13,13 +13,13 @@
 #include <SD.h>              // include Arduino SD library
  
 // define ST7735 TFT display connections
-#define TFT_RST01  7   // reset line (optional, pass -1 if not used)
+#define TFT_RST01  6   // reset line (optional, pass -1 if not used)
 #define TFT_CS01   8   // chip select line 8
-#define TFT_DC01   9   // data/command line 9 
+#define TFT_DC01   7   // data/command line 9 
 
-#define TFT_RST02  0   // reset line (optional, pass -1 if not used)
-#define TFT_CS02   2  // chip select line
-#define TFT_DC02   1   // data/command line
+#define TFT_RST02  3   // reset line (optional, pass -1 if not used)
+#define TFT_CS02   5  // chip select line
+#define TFT_DC02   4   // data/command line
 
 #define PIN_POTENTIOMETER A0
  
