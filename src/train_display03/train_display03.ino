@@ -13,40 +13,64 @@
 #include <SD.h>              // include Arduino SD library
  
 // define ST7735 TFT display connections
-#define TFT_RST01  6   // reset line (optional, pass -1 if not used)
-#define TFT_CS01   8   // chip select line 8
-#define TFT_DC01   7   // data/command line 9 
+#define TFT_RST01  6
+#define TFT_CS01   8
+#define TFT_DC01   7
 
-#define TFT_RST02  3   // reset line (optional, pass -1 if not used)
-#define TFT_CS02   5  // chip select line
-#define TFT_DC02   4   // data/command line
+#define TFT_RST02  3
+#define TFT_CS02   5
+#define TFT_DC02   4
 
-#define PIN_POTENTIOMETER A0
- 
+#define TFT_RST03  0
+#define TFT_CS03   2
+#define TFT_DC03   1
+
+#define TFT_RST04  A4
+#define TFT_CS04   A2
+#define TFT_DC04   A3
+
+int numFiles = 0;
  
 // initialize Adafruit ST7735 TFT library
 Adafruit_ST7735 tft01 = Adafruit_ST7735(TFT_CS01, TFT_DC01, TFT_RST01);
 Adafruit_ST7735 tft02 = Adafruit_ST7735(TFT_CS02, TFT_DC02, TFT_RST02);
+Adafruit_ST7735 tft03 = Adafruit_ST7735(TFT_CS03, TFT_DC03, TFT_RST03);
+//Adafruit_ST7735 tft04 = Adafruit_ST7735(TFT_CS04, TFT_DC04, TFT_RST04);
  
 void setup(void) {
-  //Serial.begin(9600);
- 
+  Serial.begin(9600);
+
+  // Initialize the displays
   pinMode(TFT_CS01, OUTPUT);
   digitalWrite(TFT_CS01, HIGH);
 
   pinMode(TFT_CS02, OUTPUT);
   digitalWrite(TFT_CS02, HIGH);
-  
-  //pinMode(button, INPUT_PULLUP);
+
+  pinMode(TFT_CS03, OUTPUT);
+  digitalWrite(TFT_CS03, HIGH);
+
+  pinMode(TFT_CS04, OUTPUT);
+  digitalWrite(TFT_CS04, HIGH);
  
-  // initialize ST7735S TFT display
   tft01.initR(INITR_GREENTAB);
   tft01.invertDisplay(1);
   tft01.fillScreen(ST77XX_BLUE);
+  tft01.setRotation(2);
 
   tft02.initR(INITR_GREENTAB);
   tft02.invertDisplay(1);
   tft02.fillScreen(ST77XX_BLUE);
+  tft02.setRotation(2);
+
+  tft03.initR(INITR_GREENTAB);
+  tft03.invertDisplay(1);
+  tft03.fillScreen(ST77XX_BLUE);
+  tft03.setRotation(2);
+
+  //tft04.initR(INITR_GREENTAB);
+  //tft04.invertDisplay(1);
+  //tft04.fillScreen(ST77XX_BLUE);
  
   Serial.print("Initializing SD card...");
   if (!SD.begin()) {
@@ -55,17 +79,24 @@ void setup(void) {
   }
   Serial.println("OK!");
  
-  File root = SD.open("/");  // open SD card main root
-  printDirectory(root, 0);   // print all files names and sizes
-  root.close();              // close the opened root
- 
+  //File root = SD.open("/");  // open SD card main root
+  //printDirectory(root, 0);   // print all files names and sizes
+  //root.close();              // close the opened root
+
+  // Random seed = read floating pin
+  randomSeed(analogRead(A0));
+
+  numFiles = countNumberOfFiles();
 }
  
 void loop() {
-  File root = SD.open("/");  // open SD card main root
+  //File root = SD.open("/");  // open SD card main root
+
+  Serial.print("Number of files: ");
+  Serial.println(numFiles);
  
   while (true) {
-    File entry =  root.openNextFile();  // open file
+    /*File entry =  root.openNextFile();  // open file
  
     if (! entry) {
       // no more files
@@ -75,20 +106,86 @@ void loop() {
  
     uint8_t nameSize = String(entry.name()).length();  // get file name size
     String str1 = String(entry.name()).substring( nameSize - 4 );  // save the last 4 characters (file extension)
+    */
+    //if ( str1.equalsIgnoreCase(".bmp") ) {
+      
+      String randomFileName = getRandomFileName(numFiles);
+      char buf[randomFileName.length()+1];
+      Serial.print("Random file name: ");
+      Serial.println(randomFileName);
+      randomFileName.toCharArray(buf, randomFileName.length()+1);
+      bmpDraw(buf, 24, 0, tft01);
+
+      randomFileName = getRandomFileName(numFiles);
+      Serial.print("Random file name: ");
+      Serial.println(randomFileName);
+      randomFileName.toCharArray(buf, randomFileName.length()+1);
+      bmpDraw(buf, 24, 0, tft02);
+
+      //randomFileName = getRandomFileName(numFiles);
+      //randomFileName.toCharArray(buf, randomFileName.length()+1);
+      //bmpDraw(buf, 24, 0, tft03);
+
+      //randomFileName = getRandomFileName(numFiles);
+      //randomFileName.toCharArray(buf, randomFileName.length()+1);
+      //bmpDraw(buf, 24, 0, tft04);
+
+      //bmpDraw(entry.name(), 24, 0, tft04);
+    //}
  
-    if ( str1.equalsIgnoreCase(".bmp") ) { // if the file has '.bmp' extension
-      bmpDraw(entry.name(), 24, 0, tft01);        // draw it
-      bmpDraw(entry.name(), 24, 0, tft02);
-    }
- 
-    entry.close();  // close the file
- 
+    //entry.close();  // close the file
+    Serial.println("----------------------");
+        
     delay(5000);
 
-    int pot_value = analogRead(PIN_POTENTIOMETER);
+    /*int pot_value = analogRead(PIN_POTENTIOMETER);
     Serial.print("Potentiometer value: ");
-    Serial.println(pot_value);
+    Serial.println(pot_value);*/
   }
+}
+
+int countNumberOfFiles(){
+    int numFiles = 0;
+    
+    File root = SD.open("/");
+
+    if(!root){
+        //Serial.println("Failed to open directory");
+    }
+    
+    if(!root.isDirectory()){
+        //Serial.println("Not a directory");
+    }
+
+    File file = root.openNextFile();
+    while(file){
+        //Serial.println(file.name());
+        if(!file.isDirectory()){
+          numFiles = numFiles + 1;
+        }
+        file.close();
+        file = root.openNextFile();
+    }
+    root.close();
+    return numFiles;
+}
+
+String getRandomFileName(int numFiles){
+  int fileNumber = random(numFiles);
+
+  String fileNumberStr = "";
+
+  if (fileNumber < 10){
+    fileNumberStr = "00" + String(fileNumber);
+  } else if (fileNumber < 100){
+    fileNumberStr = "0" + String(fileNumber);
+  }else{
+    fileNumberStr = String(fileNumber);
+  }
+
+  fileNumberStr = "/image" + fileNumberStr + ".bmp";
+
+  return fileNumberStr;
 }
  
 // This function opens a Windows Bitmap (BMP) file and
@@ -130,7 +227,11 @@ void bmpDraw(char *filename, uint8_t x, uint16_t y, Adafruit_ST7735 tft) {
   }
  
   // Parse BMP header
-  if(read16(bmpFile) == 0x4D42) { // BMP signature
+  //Serial.println(read16(bmpFile));
+  uint16_t bmp_signature = read16(bmpFile);
+  //Serial.println(bmp_signature);
+  
+  if(bmp_signature == 0x4D42) { // BMP signature
     Serial.print(F("File size: ")); Serial.println(read32(bmpFile));
     (void)read32(bmpFile); // Read & ignore creator bytes
     bmpImageoffset = read32(bmpFile); // Start of image data
@@ -210,8 +311,10 @@ void bmpDraw(char *filename, uint8_t x, uint16_t y, Adafruit_ST7735 tft) {
       } // end goodBmp
     }
   }
- 
+
+  Serial.println("Vor close");
   bmpFile.close();
+  Serial.println("Nach close");
   if(!goodBmp) Serial.println(F("BMP format not recognized."));
 }
  
