@@ -21,4 +21,9 @@ public class Station implements Comparable<Station>{
     public int compareTo(Station o) {
         return this.name.compareToIgnoreCase(o.getName());
     }
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
 }
