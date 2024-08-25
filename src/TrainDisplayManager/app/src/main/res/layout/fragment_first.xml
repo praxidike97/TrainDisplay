@@ -14,12 +14,22 @@
         android:inputType="textNoSuggestions"
         android:ems="10"
         android:layout_marginTop="60dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/checkBoxRotate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/autoComplete"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Rotieren" />
+
     <Button
-        android:id="@+id/button_first"
+        android:id="@+id/buttonConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show"

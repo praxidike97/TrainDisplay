@@ -4,6 +4,7 @@ plugins {
 
 android {
     compileSdk 34
+    namespace "de.praxidike.traindisplaymanager"
 
     defaultConfig {
         applicationId "de.praxidike.traindisplaymanager"

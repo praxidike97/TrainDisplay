@@ -1,10 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="de.praxidike.traindisplaymanager.MainActivity">
+    tools:context="com.example.raspberrypicontroller.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_ip"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_ip"
+        android:textColor = "?android:textColorPrimary"
         app:showAsAction="never" />
 </menu>

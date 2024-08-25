@@ -26,4 +26,5 @@ public class Station implements Comparable<Station>{
     public String toString(){
         return this.name;
     }
+
 }

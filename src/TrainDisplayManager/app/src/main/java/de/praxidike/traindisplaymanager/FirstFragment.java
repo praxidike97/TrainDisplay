@@ -1,6 +1,7 @@
 package de.praxidike.traindisplaymanager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,8 @@ public class FirstFragment extends Fragment {
     public ArrayList<Station> stationList;
     public int selectedStationEvaNr = -1;
 
+    public static final String LOGTAG = "FirstFragment";
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -57,76 +61,75 @@ public class FirstFragment extends Fragment {
 
         stationList = loadStationsFromAssets();
         Collections.sort(stationList);
-        /*String[] stationNames = new String[stationList.size()];
+        int positionSavedStation = 0;
 
-        for (int i = 0; i < stationList.size(); i++){
-            stationNames[i] = stationList.get(i).getName();
+        SharedPreferences sharedPref1 = getActivity().getSharedPreferences(getString(R.string.shared_pref_file), Context.MODE_PRIVATE);
+        int savedEvaNr = sharedPref1.getInt(getString(R.string.shared_pref_eva_nr), 0);
+        selectedStationEvaNr = savedEvaNr;
+
+        for(int i = 0; i < stationList.size(); i++){
+            if(stationList.get(i).getEvaNr() == savedEvaNr){
+                positionSavedStation = i;
+                break;
+            }
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                    android.R.layout.simple_dropdown_item_1line, stationNames);*/
-
-
-        ArrayAdapter<Station> adapter = new ArrayAdapter<Station>(getContext(), android.R.layout.simple_dropdown_item_1line, stationList);
+        ArrayAdapter<Station> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, stationList);
         binding.autoComplete.setAdapter(adapter);
-        binding.autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = parent.getItemAtPosition(position);
-                if (item instanceof Station){
-                    Station selecteStation = (Station) item;
-                    selectedStationEvaNr = selecteStation.getEvaNr();
+        binding.autoComplete.setText(binding.autoComplete.getAdapter().getItem(positionSavedStation).toString(), false);
+        binding.autoComplete.setOnItemClickListener((parent, view12, position, id) -> {
+            Object item = parent.getItemAtPosition(position);
+            if (item instanceof Station){
+                Station selecteStation = (Station) item;
+                selectedStationEvaNr = selecteStation.getEvaNr();
 
-                    View focudView = getActivity().getCurrentFocus();
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(focudView.getWindowToken(), 0);
-                    binding.autoComplete.clearFocus();
-                }
-            }
-        });
+                SharedPreferences sharedPreferences1 = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.shared_pref_file), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences1.edit();
+                editor.putInt(getString(R.string.shared_pref_eva_nr), selectedStationEvaNr);
+                editor.apply();
 
-        /*binding.autoComplete.setAdapter(adapter);
-        binding.autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 View focudView = getActivity().getCurrentFocus();
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(focudView.getWindowToken(), 0);
                 binding.autoComplete.clearFocus();
             }
-        });*/
+        });
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.buttonConfirm.setOnClickListener(view1 -> {
 
-            @Override
-            public void onClick(View view) {
+            if (selectedStationEvaNr < 0){
+                Toast.makeText(getActivity(), "Station mit EVA Nr " + selectedStationEvaNr + " nicht gefunden.", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getActivity(), "Aktualisiere Anzeige...", Toast.LENGTH_SHORT).show();
+                SharedPreferences sharedPref2 = getActivity().getSharedPreferences(getString(R.string.shared_pref_file), Context.MODE_PRIVATE);
+                String ip = sharedPref2.getString(getString(R.string.shared_pref_ip), null);
 
-                if (selectedStationEvaNr < 0){
-                    Toast.makeText(getActivity(), "Station mit EVA Nr " + selectedStationEvaNr + " nicht gefunden.", Toast.LENGTH_LONG).show();
+                if(ip == null){
+                    Log.e(LOGTAG, "IP address is null!");
                 }else {
-
                     // Instantiate the RequestQueue.
                     RequestQueue queue = Volley.newRequestQueue(getContext());
-                    String url = "http://192.168.0.59:8000/generate_timetable/" + selectedStationEvaNr;
-                    Log.d("TAG", url);
+                    String url = "http://" + ip + ":8000/generate_timetable/" + selectedStationEvaNr;
+                    Log.d(LOGTAG, url);
                     // Request a string response from the provided URL.
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.d("TAG", response);
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("TAG", error.toString());
-                        }
-                    });
+                            response -> Log.d("TAG", response), error -> Log.d("TAG", error.toString()));
 
                     queue.add(stringRequest);
                 }
             }
         });
+
+        binding.checkBoxRotate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_pref_file), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.shared_pref_rotate), isChecked);
+            editor.apply();
+        });
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_pref_file), Context.MODE_PRIVATE);
+        boolean rotate = sharedPref.getBoolean(getString(R.string.shared_pref_rotate), false);
+        binding.checkBoxRotate.setChecked(rotate);
     }
 
     public ArrayList<Station> loadStationsFromAssets() {
