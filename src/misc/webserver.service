@@ -1,0 +1,10 @@
+[Unit]
+Description=Webserver for train display webserver
+After=network.target
+
+[Service]
+ExecStart=/home/pi/.venvs/py311_train_display/bin/python3 /home/pi/Projects/TrainDisplay/src/SignGeneratorGUI/python/webserver.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
