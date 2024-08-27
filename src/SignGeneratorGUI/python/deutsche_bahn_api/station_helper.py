@@ -1,6 +1,7 @@
 import json
 import pkgutil
 import mpu
+from typing import Optional
 
 from deutsche_bahn_api.station import Station
 
@@ -53,3 +54,13 @@ class StationHelper:
                 results.append(station)
 
         return results
+
+    def find_station_by_eva_nr(self, eva_nr: int) -> Optional[Station]:
+        result: Station = None
+
+        for station in self.stations_list:
+            if eva_nr == station.EVA_NR:
+                result = station
+                break
+
+        return result
