@@ -15,7 +15,7 @@ from deutsche_bahn_api.timetable_helper import TimetableHelper
 from deutsche_bahn_api.train import Train
 from deutsche_bahn_api.station import Station
 
-global_path = "/home/pi/Projects/TrainDisplay/src/SignGeneratorGUI/python"
+global_path = "/home/pi/Projects/TrainDisplay/src/python"
 
 # Defined how many hours in the future trains should be displayed.
 # If it is 19:26 now and HOURS_IN_THE_FUTURE = 2, all trains between

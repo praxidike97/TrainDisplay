@@ -103,13 +103,14 @@ public class FirstFragment extends Fragment {
                 Toast.makeText(getActivity(), "Aktualisiere Anzeige...", Toast.LENGTH_SHORT).show();
                 SharedPreferences sharedPref2 = getActivity().getSharedPreferences(getString(R.string.shared_pref_file), Context.MODE_PRIVATE);
                 String ip = sharedPref2.getString(getString(R.string.shared_pref_ip), null);
+                boolean rotate = sharedPref2.getBoolean(getString(R.string.shared_pref_rotate), false);
 
                 if(ip == null){
                     Log.e(LOGTAG, "IP address is null!");
                 }else {
                     // Instantiate the RequestQueue.
                     RequestQueue queue = Volley.newRequestQueue(getContext());
-                    String url = "http://" + ip + ":8000/generate_timetable/" + selectedStationEvaNr;
+                    String url = "http://" + ip + ":8000/generate_timetable?eva_nr=" + selectedStationEvaNr + "&rotate=" + (rotate ? 1 : 0);
                     Log.d(LOGTAG, url);
                     // Request a string response from the provided URL.
                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
