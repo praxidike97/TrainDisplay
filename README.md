@@ -12,6 +12,8 @@ In order to make this project runnable, the ```.ttf``` file from ```assets```has
    "key": <put key here>
 }
 ```
+<br/><br/>
+
 The following images show the pinout of the Raspberry Pi Zero W. 
 
 ![alt text](imgs/raspi_pinout02.png)
