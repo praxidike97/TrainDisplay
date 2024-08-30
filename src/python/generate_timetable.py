@@ -15,8 +15,6 @@ from deutsche_bahn_api.timetable_helper import TimetableHelper
 from deutsche_bahn_api.train import Train
 from deutsche_bahn_api.station import Station
 
-global_path = "/home/pi/Projects/TrainDisplay/src/python"
-
 # Defined how many hours in the future trains should be displayed.
 # If it is 19:26 now and HOURS_IN_THE_FUTURE = 2, all trains between
 # 19:26 and 21:59 will be displayed
@@ -94,8 +92,8 @@ def generate_timetable(station: Station, credentials_file_path: str = "credentia
 
     display_image = Image.new("RGB", (320, 240), (20, 85, 192))
     draw = ImageDraw.Draw(display_image)
-    font = ImageFont.truetype(os.path.join(global_path, "NimbusSanL-BoldCond.ttf"), 12)
-    font_bold = ImageFont.truetype(os.path.join(global_path, "NimbusSanL-BoldCond.ttf"), 19)
+    font = ImageFont.truetype("NimbusSanL-BoldCond.ttf", 12)
+    font_bold = ImageFont.truetype("NimbusSanL-BoldCond.ttf", 19)
 
     for i, entry in enumerate(time_table_entries[:8]):
         draw.text((15, 30*i+2), entry.departure_time.strftime("%H:%M"), (255,255,255), font=font_bold)
@@ -108,7 +106,7 @@ def generate_timetable(station: Station, credentials_file_path: str = "credentia
        display_image = display_image.rotate(180, Image.NEAREST, expand=1)
 
     disp.image(display_image)
-    display_image.save(os.path.join(global_path, "display_image.png"))
+    #display_image.save(os.path.join(global_path, "display_image.png"))
 
 
 if __name__ == "__main__":
