@@ -70,12 +70,12 @@ class TimeTableEntry:
         else:
             self.train_id = train.train_type + " " + train.train_number
 
-def generate_timetable_from_eva_nr(eva_nr: int, credentials_file_path: str = "credentials.json"):
+def generate_timetable_from_eva_nr(eva_nr: int, credentials_file_path: str = "credentials.json", rotate: bool = False):
     station_helper = StationHelper()
     station: Station = station_helper.find_station_by_eva_nr(eva_nr)
-    generate_timetable(station, credentials_file_path)
+    generate_timetable(station, credentials_file_path, rotate)
 
-def generate_timetable(station: Station, credentials_file_path: str = "credentials.json"):
+def generate_timetable(station: Station, credentials_file_path: str = "credentials.json", rotate: bool = False):
     with open(credentials_file_path) as f:
         auth_json = json.load(f)
     api = ApiAuthentication(auth_json["id"], auth_json["key"])
@@ -104,6 +104,9 @@ def generate_timetable(station: Station, credentials_file_path: str = "credentia
         draw.rectangle([70, 30*i+5, 120, 30*i+20], fill="#ffffff")
         draw.text((75, 30*i+5), entry.train_id, (20, 85, 192), font=font)
 
+    if rotate:
+       display_image = display_image.rotate(180, Image.NEAREST, expand=1)
+
     disp.image(display_image)
     display_image.save(os.path.join(global_path, "display_image.png"))
 
@@ -112,6 +115,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-s','--station', help='The name of the station to show departures from', default="Bremen Hbf")
     parser.add_argument('-e','--eva_nr', help='The EVA number of the station')
+    parser.add_argument('-r','--rotate', help='Whether to rotate the image by 180 degrees')
     args = vars(parser.parse_args())
 
     station_helper = StationHelper()
