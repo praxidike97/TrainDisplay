@@ -12,6 +12,8 @@ In order to make this project runnable, the ```.ttf``` file from ```assets```has
    "key": <put key here>
 }
 ```
+
+The file ```webserver.service``` (under ```src/misc```) also has to be placed under ```/etc/systemd/system/webserver.service```. It will automatically start after boot. 
 <br/><br/>
 
 The following images show the pinout of the Raspberry Pi Zero W. 
