@@ -1,0 +1,5 @@
+flask
+adafruit-circuitpython-rgb-display
+pillow
+requests
+mpu

@@ -71,6 +71,21 @@ class TimeTableEntry:
 def generate_timetable_from_eva_nr(eva_nr: int, credentials_file_path: str = "credentials.json", rotate: bool = False):
     station_helper = StationHelper()
     station: Station = station_helper.find_station_by_eva_nr(eva_nr)
+
+    with open("/etc/train_display/config_file.txt", "w") as f:
+       f.write(str(station.EVA_NR) + '\n')
+       f.write(str(int(rotate)))
+
+    generate_timetable(station, credentials_file_path, rotate)
+
+def generate_timetable_from_config_file(credentials_file_path: str = "credentials.json"):
+    with open("/etc/train_display/config_file.txt") as file:
+       eva_nr = int(file.readline().strip())
+       rotate = bool(int(file.readline().strip()))
+
+    station_helper = StationHelper()
+    station: Station = station_helper.find_station_by_eva_nr(eva_nr)
+
     generate_timetable(station, credentials_file_path, rotate)
 
 def generate_timetable(station: Station, credentials_file_path: str = "credentials.json", rotate: bool = False):
@@ -106,6 +121,7 @@ def generate_timetable(station: Station, credentials_file_path: str = "credentia
        display_image = display_image.rotate(180, Image.NEAREST, expand=1)
 
     disp.image(display_image)
+
     #display_image.save(os.path.join(global_path, "display_image.png"))
 
 
@@ -114,15 +130,19 @@ if __name__ == "__main__":
     parser.add_argument('-s','--station', help='The name of the station to show departures from', default="Bremen Hbf")
     parser.add_argument('-e','--eva_nr', help='The EVA number of the station')
     parser.add_argument('-r','--rotate', help='Whether to rotate the image by 180 degrees')
+    parser.add_argument('-c','--from-config', help='Generate timetable from config under /etc/train_display/config_file.txt', action='store_true')
     args = vars(parser.parse_args())
 
     station_helper = StationHelper()
     station: Station = None
 
-    if args["eva_nr"] is None:
-        found_stations_by_name = station_helper.find_stations_by_name(args["station"])
-        station = found_stations_by_name[0]
+    if args["from_config"]:
+        generate_timetable_from_config_file("/etc/train_display/credentials.json")
     else:
-        station = station_helper.find_station_by_eva_nr(int(args["eva_nr"]))
+        if args["eva_nr"] is None:
+            found_stations_by_name = station_helper.find_stations_by_name(args["station"])
+            station = found_stations_by_name[0]
+        else:
+            station = station_helper.find_station_by_eva_nr(int(args["eva_nr"]))
 
-    generate_timetable(station)
+        generate_timetable(station)
