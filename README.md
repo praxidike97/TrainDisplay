@@ -20,6 +20,13 @@ In order to make this project runnable, the ```.ttf``` file from ```assets```has
 ```
 The file ```webserver.service``` (under ```src/misc```) also has to be placed under ```/etc/systemd/system/webserver.service```. It will automatically start after boot. 
 The SPI interface is not enables by default. Run ```sudo raspi-config``` and under ```Interface Options``` choose ```SPI```and enable it there. 
+
+Furthermore, a cronjob has to be created in order to regularly update the display (in this case every 15 minutes) and display a timetable right after boot. Execute ```crontab -e``` and add the following line:
+
+```
+*/15 * * * * /home/pi/.venvs/py311_train_display/bin/python3 /home/pi/Projects/TrainDisplay/src/python/generate_timetable.py --from-config
+@reboot /home/pi/.venvs/py311_train_display/bin/python3 /home/pi/Projects/TrainDisplay/src/python/generate_timetable.py --from-config
+```
 <br/><br/>
 
 The following images show the pinout of the Raspberry Pi Zero W. 
