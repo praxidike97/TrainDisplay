@@ -47,3 +47,15 @@ This project was made to work with a Waveshare SPI display. In order to make thi
 | DC       | GPIO25  |
 | RST      | GPIO24  |
 | BL       | GPIO18  |
+
+## Troubleshooting 
+
+Please try the following steps before reporting an error to me (looking at you Dad)
+
+1. In a browser, input the following URL:
+```
+http://<IP address of the Raspberry Pi>:8000/generate_timetable?eva_nr=8000019&rotate=0
+````
+If a message like "Generated successful" appears, everything is right with the Pi and something is wrong with the App. Did you input the right IP address?
+2. Login on the Pi (using Putty for example) and run ```sudo systemctl status webserver```.
+3. 
