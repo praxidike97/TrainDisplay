@@ -6,14 +6,14 @@
 The Android app is located under the ```build```directory. Inside the app, the IP address of the Raspberry Pi has to be set. 
 
 <p float="left">
-  <img src="imgs/app_screenshot01.png" width="400" />
-  <img src="imgs/app_screenshot02.png" width="400" /> 
+  <img src="imgs/app_screenshot01.png" width="300" />
+  <img src="imgs/app_screenshot02.png" width="300" /> 
 </p>
 
 
 ### Raspberry Pi
 
-A cronjob was created in order to regularly update the display (in this case every 5 minutes) and display a timetable right after boot. Execute ```crontab -e``` and add the following line:
+A cronjob was created in order to regularly update the display (in this case every 5 minutes) and display a timetable right after boot. Executing ```crontab -e``` should open a file that looks like this:
 
 ```
 */5 * * * * /home/pi/.venvs/py311_train_display/bin/python3 /home/pi/Projects/TrainDisplay/src/python/generate_timetable.py --from-config
@@ -53,7 +53,7 @@ http://<IP address of the Raspberry Pi>:8000/generate_timetable?eva_nr=8000019&r
 ````
 If a message like "Generated successful" appears, everything is right with the Pi and something is wrong with the App. Did you input the right IP address?
 
-2. Login on the Pi (using Putty for example) and run ```sudo systemctl status webserver```.
+2. Login on the Pi (using Putty for example) and run ```sudo systemctl status webserver```. It should say ```Active (running)```, like this:
 3. hfghf
 
 
