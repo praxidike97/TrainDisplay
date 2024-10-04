@@ -22,7 +22,6 @@ A cronjob was created in order to regularly update the display (in this case eve
 
 If the display should be updated every 15 minutes instead of every 5 minutes just change the ```*/5```to ```*/15```. 
 
-<br/><br/>
 
 The following images show the pinout of the Raspberry Pi Zero W. 
 
