@@ -67,6 +67,10 @@ class TimeTableEntry:
                 self.train_id = train.train_type + " " + train.train_line
         else:
             self.train_id = train.train_type + " " + train.train_number
+            
+    def __eq__(self, other):
+        return self.destination == other.destination and self.departure_time == other.departure_time and\
+            self.train_id == other.train_id and self.platform == other.platform
 
 def generate_timetable_from_eva_nr(eva_nr: int, credentials_file_path: str = "credentials.json", rotate: bool = False):
     station_helper = StationHelper()
@@ -103,6 +107,8 @@ def generate_timetable(station: Station, credentials_file_path: str = "credentia
 
     time_table_entries = [TimeTableEntry(train) for train in trains_in_this_hour]
     time_table_entries = list(filter(lambda t: t.departure_time > time_now, time_table_entries))
+    # Remove duplicates
+    time_table_entries = list(set(time_table_entries))
     time_table_entries = sorted(time_table_entries, key = lambda x: x.departure_time)
 
     display_image = Image.new("RGB", (320, 240), (20, 85, 192))
