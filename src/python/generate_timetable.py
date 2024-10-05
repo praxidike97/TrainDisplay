@@ -74,6 +74,9 @@ class TimeTableEntry:
     
     def __hash__(self):
         return hash(str(self))
+        
+    def __str__(self):
+        return self.destination + self.train_id + self.platform + self.departure_time.strftime('%m/%d/%Y/%H/%M')
 
 def generate_timetable_from_eva_nr(eva_nr: int, credentials_file_path: str = "credentials.json", rotate: bool = False):
     station_helper = StationHelper()
