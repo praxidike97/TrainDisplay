@@ -14,7 +14,7 @@ def single_converter():
     rotate = request.args.get('rotate', type=int, default=0)
 
     generate_timetable_from_eva_nr(eva_nr, "/etc/train_display/credentials.json", bool(rotate))
-    return str(rotate)
+    return "Generated successful!"
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000, debug=True)
