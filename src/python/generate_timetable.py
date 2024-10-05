@@ -71,6 +71,9 @@ class TimeTableEntry:
     def __eq__(self, other):
         return self.destination == other.destination and self.departure_time == other.departure_time and\
             self.train_id == other.train_id and self.platform == other.platform
+    
+    def __hash__(self):
+        return hash(str(self))
 
 def generate_timetable_from_eva_nr(eva_nr: int, credentials_file_path: str = "credentials.json", rotate: bool = False):
     station_helper = StationHelper()
