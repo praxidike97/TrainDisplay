@@ -52,8 +52,11 @@ http://<IP address of the Raspberry Pi>:8000/generate_timetable?eva_nr=8000019&r
 ````
 If a message like "Generated successful" appears, everything is right with the Pi and something is wrong with the App. Did you input the right IP address?
 
-2. Login on the Pi (using Putty for example) and run ```sudo systemctl status webserver```. It should say ```Active (running)```, like this:
-3. hfghf
+2. Login on the Pi (using Putty for example) and run ```sudo systemctl status webserver```. It should say ```active (running)```, like this:
+
+    <img src="imgs/webserver_screenshot.png" width="1000" />
+
+    If not, run ```sudo systemctl restart webserver```
 
 
 ## Dev documentation
